@@ -1,0 +1,19 @@
+﻿print('โปรแกรมคำนวณพื้นที่ผนัง')
+height = 3
+width = 5
+area = width * height
+cost = 150
+total = area * cost
+# print('price :', total , '฿')
+total_sum = 0
+for i in range(4):
+    print('ผนังเบอร์:',i+1)
+    width = int(input('กวาง = '))
+    height = int(input('สูง = '))
+    area = width * height
+    cost = 150
+    total = area * cost
+    print('ค่าใช้จ่าย ', total, '฿')
+    print('---------------')
+    total_sum = total_sum + total
+print('รวมค่าใช้จ่ายทังหมด: ',total_

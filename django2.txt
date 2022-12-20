@@ -1,0 +1,130 @@
+﻿sudo nano test.py
+print('Hello Server')
+ctrl + x, y, enter
+
+
+sudo apt-get update && apt-get upgrade
+
+hostnamectl set-hostname django-server
+hostname
+
+nano /etc/hosts
+167.71.213.26 django-server
+
+sudo adduser schooladmin
+sudo adduser schooladmin sudo
+
+login
+user: schooladmin
+pass: xxx
+
+ls (for checking project folder)
+
+sudo apt-get install ufw
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+
+sudo ufw allow 8000
+sudo ufw allow 22
+sudo ufw enable
+sudo ufw status
+
+sudo apt-get install python3-pip
+
+sudo apt-get install python3-venv
+
+sudo python3 -m venv venv
+
+
+source ./venv/bin/activate
+
+
+cd .. (main folder of user (desktop))
+
+sudo chown -R 777 'venv'
+sudo chmod -R 777 'venv'
+sudo chown -R 777 'djangoschool'
+sudo chmod -R 777 'djangoschool'
+
+pip install --upgrade pip
+pip install django==4.0
+pip install pillow
+
+cd djangoschool
+
+python manage.py runserver 0.0.0.0:8000
+
+
+
+edit settings.py: before: STATIC_URL
+STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
+edit (join main path to template folder)
+----------------------
+TEMPLATES = [
+    {
+        'DIRS': [os.path.join(BASE_DIR,'school/template')], }
+----------------------
+activate venv
+
+python manage.py collectstatic
+
+sudo apt-get install apache2
+
+sudo apt-get install libapache2-mod-wsgi-py3
+
+cd /etc/apache2/sites-available/
+we will found: 000-default.conf >>> copy this file to django_project.conf
+sudo cp 000-default.conf django_project.conf
+
+sudo nano django_project.conf
+
+copy text in this file: command2.txt
+paste before </VirtualHost>
+
+sudo a2ensite django_project
+sudo a2dissite 000-default.conf
+
+>> go out user desktop
+sudo chown :www-data djangoschool/db.sqlite3
+sudo chmod 664 djangoschool/db.sqlite3
+sudo chown :www-data djangoschool/
+
+
+if you no 'media' folder
+	cd djangoschool
+	mkdir media
+	cd ..
+
+sudo chown -R :www-data djangoschool/media
+sudo chown -R 775 djangoschool/media
+
+-------------
+
+sudo ufw delete allow 8000
+sudo ufw allow http/tcp
+sudo service apache2 restart
+
+
+COMMAND2.txt 
+------------------
+Alias /static /home/schooladmin/djangoschool/static
+	<Directory /home/schooladmin/djangoschool/static>
+		Require all granted
+	</Directory>
+
+	Alias /media /home/schooladmin/djangoschool/media
+	<Directory /home/schooladmin/djangoschool/media>
+		Require all granted
+	</Directory>
+
+	<Directory /home/schooladmin/djangoschool/djangoschool>
+                <Files wsgi.py>
+			Require all granted
+		</Files>
+        </Directory>
+
+	WSGIScriptAlias / /home/schooladmin/djangoschool/djangoschool/wsgi.py
+	WSGIDaemonProcess django_app python-path=/home/schooladmin/djangoschool python-home=/home/schooladmin/venv
+	WSGIProcessGroup django_app
+------------------
